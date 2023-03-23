@@ -1,7 +1,7 @@
-<%@page import="java.util.Date"%>
 <%@page import="study.day0321.PersonDto"%>
-<%@page import="java.util.List"%>
 <%@page import="study.day0321.PersonDao"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
 <!DOCTYPE html>
