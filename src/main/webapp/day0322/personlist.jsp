@@ -13,6 +13,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&family=Lobster&family=Nanum+Pen+Script&family=Single+Day&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 	<%
@@ -20,6 +22,32 @@
 		List<PersonDto> list = dao.getAllPerson();
 	%>
 </body>
+	<!-- The Modal -->
+    <div class="modal" id="photoModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title"  id="modalname">Modal Heading</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <img src="" id="modalphoto" style="width: 100%; height: 400px;">
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 	<a href = "personform.jsp">멤버 추가</a>
 	<hr>
 	<h3 class = "alert alert-danger">
@@ -45,7 +73,8 @@
 				<td align = "center"><%=n++%></td>
 				<td>
 					<img src = "../image/<%=dto.getPhoto()%>" width = "30" border = "1"
-						hspace = "10" class = "photo">
+						hspace = "10" class = "photo"
+						data-bs-toggle="modal" data-bs-target="#photoModal">
 						
 					<b><%=dto.getName() %></b>
 				</td>
@@ -56,7 +85,7 @@
 				<td><%=dto.getJob() %></td>
 				<td>
 					<button type = "button" class = "btn btn-success btn-sm"
-						onclick="">수정</button>
+						onclick="location.href='personupdateform.jsp?num=<%=dto.getNum()%>'">수정</button>
 					<button type = "button" class = "btn btn-success btn-sm"
 						onclick="del(<%=dto.getNum()%>)">삭제</button>
 				</td>
@@ -72,5 +101,17 @@
 				location.href = "deleteperson.jsp?num=" + num
 			}
 		}
+		
+		// 작은 사진 클릭시 모달에 사진나오게 하기
+		$(".photo").click(function() {
+			// 클릭한곳의 src
+			let selectSrc = $(this).attr("src");
+			// 모달안의 이미지에 넣기
+			$("#modalphoto").attr("src", selectSrc);
+			// 사진클릭한곳 다음태그가 b태그이다 그태그의 text를 얻는다
+			let name = $(this).next().text();
+			// 모달 header에 출력
+			$("#modalname").text(name);
+		})
 	</script>
 </html>
