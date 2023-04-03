@@ -12,9 +12,48 @@
 			// 처음에는 전체 사원 데이터 가져오기
 			// 전체: 1, 남자 2, 여자 2
 			list(1);
+	
+		$('.select').click(function() {
+			list($(this).val())	
+		})
+	
 	});
 	function list(select) {
-		
+		console.log(select);
+		$.ajax({
+			type: "get",
+			url: "sawonlist.jsp",
+			data: {"select" : select},
+			dataType: "json",
+			success: function(res) {
+				$("#total_cnt").text(res.length)
+				console.log("asdf");
+				let s = '총 ' + res.length + '명<br><br>' 
+				s += "<table class = 'table table-bordered'><tr style = 'background-color: gray;'>";
+				
+				s += "<th>이름</th><th>점수</th><th>성별</th><th>부서</th></tr>";
+				
+				$.each(res, function(idx, element) {
+					s += "<tr>";
+					s += `<td>${element.name}</td>`;
+					s += `<td>${element.score}</td>`;
+					s += `<td>${element.gender}</td>`;
+					s += `<td>${element.buseo}</td>`;
+					s += "</tr>";
+				})
+				s += "</table>";
+				$(".sawonview").html(s);
+				
+			},
+			statusCode: {
+				404: function() {
+					alert("파일이 없어요")
+				},
+				500: function() {
+					alert("서버 오류.. 다시한번 코드를 확인하세요")
+				}
+			}
+		})
 	}
 
 </script>
@@ -26,13 +65,16 @@
 		</label>
 		&nbsp;&nbsp;
 		<lable>
-			<input type = 'radio' name = 'select' class = 'select' value = '2' checked>남자
+			<input type = 'radio' name = 'select' class = 'select' value = '2'>남자
 		</lable>
 		&nbsp;&nbsp;
 		<label>
-			<input type = 'radio' name = 'select' class = 'select' value = '3' checked>여자
+			<input type = 'radio' name = 'select' class = 'select' value = '3'>여자
 		</label>
+	</div>
 	
+	<div style = 'margin: 30px 30px' class = 'sawonview'>
+		
 	</div>
 </body>
 </html>
