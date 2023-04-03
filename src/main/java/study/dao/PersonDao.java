@@ -175,4 +175,48 @@ public class PersonDao {
 		
 		return list;
 	}
+	
+	public List<PersonDto> getSearchNamePerson(String sword) {
+		List<PersonDto> list = new Vector<>();
+		Connection conn = db.getMysqlConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select * from person where name like ? order by num asc";
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + sword + "%");
+			rs = pstmt.executeQuery();
+			
+			
+			
+			while(rs.next()) {				
+				PersonDto dto = new PersonDto();
+				
+				dto.setNum(rs.getInt("num"));
+				dto.setName(rs.getString("name"));
+				dto.setBirthyear(rs.getInt("birthyear"));
+				dto.setAddress(rs.getString("address"));
+				dto.setJob(rs.getString("job"));
+				dto.setPhoto(rs.getString("photo"));
+				list.add(dto);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(conn != null) conn.close();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
 }
